@@ -12,10 +12,11 @@ D_Tau = 0.125;
 TempSlice = Beta/D_Tau;
 lambda = 2.0*atanh(sqrt(tanh(D_Tau*Uene/4.0)));
 NumOfWarm = 50;
+NumOfWarm_inside = 0;
 %NumOfWarm = 0;
-NumOfEpoch = 1000;
+NumOfEpoch = 100;
 Sigma = double(rand([TempSlice,NumOfVertexs])>0.5)*2.0-1.0;%RandomInit
-N_wrap = 5;
+N_wrap = 10;
 N_cut = 5.0;
 id_mat = eye(NumOfVertexs);
 
@@ -28,6 +29,7 @@ count = 1.0;
 
 WarmUp(zjy_index,N_wrap,Sigma,id_mat,NumInEdge,NumOfWarm,NumOfEpoch,K,TempSlice,NumOfVertexs,Miu,Uene,D_Tau,lambda,T_hop);
 for epoch_index = 1:1:NumOfEpoch
+    WarmUp(zjy_index,N_wrap,Sigma,id_mat,NumInEdge,NumOfWarm_inside,NumOfEpoch,K,TempSlice,NumOfVertexs,Miu,Uene,D_Tau,lambda,T_hop);%reduce the correlation
     if mod(zjy_index,8) == 1
         fprintf("D_Tau = %f,MC_Ratio = %f\n",D_Tau,epoch_index/NumOfEpoch);
     end

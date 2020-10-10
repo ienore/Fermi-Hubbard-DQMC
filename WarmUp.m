@@ -32,7 +32,7 @@ for warm_index = 1:1:NumOfWarm
             green_L_up = B_trans_inv_up*green_L_up*B_trans_up;
             green_L_down = B_trans_inv_down*green_L_down*B_trans_down;
             end
-        end
+        end %green_L_up/down is calculated done.
         for site_index = 1:1:NumOfVertexs
             delta_up = zeros(NumOfVertexs);
             delta_up(site_index,site_index) = exp(-2*lambda*Sigma(time_index,site_index))-1;
