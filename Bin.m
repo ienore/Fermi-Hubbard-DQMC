@@ -11,6 +11,6 @@ function [bin_mean,bin_stdvar] = Bin(sample)
     end
     bin_temp = bin_data - bin_mean;
     bin_stdvar = sqrt((sum(bin_temp.^2)/max_bin_num - (sum(bin_temp)/max_bin_num)^2)/(max_bin_num-1)); 
-    disp(bin_stdvar);
+    %disp(bin_stdvar);
 end
 

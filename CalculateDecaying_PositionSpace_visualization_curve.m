@@ -2,21 +2,21 @@
 %fprintf("FINAL_RUN:%d\n",FINAL_RUN);
 zjy_index = 1;
 T_hop = 1.0;
-NumInEdge = 4;
+NumInEdge = 8;
 NumOfVertexs = NumInEdge^2;
 K = Get_K(NumInEdge);
 
-Uene = 2.0;
+Uene = 6.0;
 Miu = Uene/2;
-Beta = 2;
+Beta = 4;
 D_Tau = 0.25;
 TempSlice = Beta/D_Tau;
 lambda = 2.0*atanh(sqrt(tanh(D_Tau*Uene/4.0)));
-%NumOfWarm = 100;
+NumOfWarm = 100;
 %NumOfWarm = 0;
-NumOfEpoch = 10000;
+NumOfEpoch = 600;
 Sigma = double(rand([TempSlice,NumOfVertexs])>0.5)*2.0-1.0;%RandomInit
-N_wrap = 10;
+N_wrap = 5;
 N_cut = 5.0;
 id_mat = eye(NumOfVertexs);
 
@@ -37,7 +37,7 @@ for epoch_index = 1:1:NumOfEpoch
     for time_index_mother = 2:1:TempSlice
         if reverse_sign == 0
             time_index = time_index_mother;
-            if mod(time_index_mother,N_wrap) == 2
+            if mod(time_index_mother,N_wrap) == 1 || time_index_mother == 2
                 green_L_up = Get_G_L(1.0,time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
                 green_L_down = Get_G_L(-1.0,time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
             else
@@ -67,14 +67,30 @@ for epoch_index = 1:1:NumOfEpoch
         green_down = green_L_down;
         green_up_c = id_mat - transpose(green_L_up);
         green_down_c = id_mat - transpose(green_L_down);
-        mea_result_auxi(count) = green_down_c(1,1)*green_up_c(1,1);
+        mea_result_auxi(count) = green_down_c(1,1)+green_up_c(1,1);
+        count = count + 1;
         t_start = 0;
-        G_equal =  Get_B_L2_inv(1,time_index,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*green_up*Get_B_L2(1,time_index,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
-        %G_equal = Get_G_L(1.0,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);%up state
+%         [U,D,V] = Get_B_L2_svd(1,time_index,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+%         [U,D,V_new] = svd((green_up*U)*D);
+%         V = V * V_new;
+%         [Ui,Di,Vi] = Get_B_L2_inv_svd(1,time_index,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+%         [U_new,D,V_new] = svd(Di*((Vi'*U)*D));
+%         V = V * V_new;
+%         U = Ui * U_new;
+        %G_equal = U * D*V';
+        %G_equal =  Get_B_L2_inv(1,time_index,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*green_up*Get_B_L2(1,time_index,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+%         [U,D,V] = Get_B_L2_svd(1,time_index,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+%         [Ui,Di,Vi] = Get_B_L2_inv_svd(1,time_index,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+%         temp = (Vi'*green_up * U);
+%         temp = Di * temp *D;
+%         G_equal = Ui * temp * V';
+        G_equal = Get_G_L(1.0,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);%up state
         B_propa = eye(NumOfVertexs);
+        [U,D,V] = svd(B_propa);
         for propa_time_index = 1:1:TempSlice
-           B_propa = Get_B_L(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*B_propa;  
-           G_propa = B_propa * G_equal;
+           [U,D,V_new] = svd((Get_B_L(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*U)*D);
+           V = V*V_new;
+           G_propa = U*(D*(V'* G_equal));
            for site_index = 1:1:NumOfVertexs
                 mea_result_propa(propa_time_index,count_list(propa_time_index)) = G_propa(site_index,site_index);
                 count_list(propa_time_index) = count_list(propa_time_index) + 1;
@@ -117,7 +133,7 @@ end
 % xlabel('Tau ratio');
 % ylabel('log(G_propa)');
 
-plot((1:1:TempSlice).*D_Tau/Beta,plot_svar./plot_mean_ori,'r');
+errorbar((1:1:TempSlice).*D_Tau/Beta,plot_mean_ori,plot_svar_ori,'r');
 title(['L = ',num2str(NumInEdge),'  ','Uene = ',num2str(Uene), '   Beta = ',num2str(Beta)]);
 xlabel('Tau ratio');
 ylabel('G_{propa}_Err ratio');
