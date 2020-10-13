@@ -8,7 +8,7 @@ for warm_index = 1:1:NumOfWarm
     for time_index_mother = 2:1:TempSlice
         if reverse_sign == 0
             time_index = time_index_mother;
-            if mod(time_index_mother,N_wrap) == 2
+            if mod(time_index_mother,N_wrap) == 2 || (time_index_mother == 2)
                 green_L_up = Get_G_L(1.0,time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
                 green_L_down = Get_G_L(-1.0,time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
             else
