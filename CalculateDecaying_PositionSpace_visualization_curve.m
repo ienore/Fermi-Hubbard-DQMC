@@ -2,11 +2,11 @@
 %fprintf("FINAL_RUN:%d\n",FINAL_RUN);
 zjy_index = 1;
 T_hop = 1.0;
-NumInEdge = 4;
+NumInEdge = 6;
 NumOfVertexs = NumInEdge^2;
 K = Get_K(NumInEdge);
 
-Uene = 6.0;
+Uene = 6;
 Miu = Uene/2;
 Beta = 6;
 D_Tau = 0.2;
@@ -14,9 +14,9 @@ TempSlice = Beta/D_Tau;
 lambda = 2.0*atanh(sqrt(tanh(D_Tau*Uene/4.0)));
 NumOfWarm = 100;
 %NumOfWarm = 0;
-NumOfEpoch = 100;
+NumOfEpoch = 1000;
 Sigma = double(rand([TempSlice,NumOfVertexs])>0.5)*2.0-1.0;%RandomInit
-N_wrap = 5;
+N_wrap = 10;
 N_cut = 5.0;
 id_mat = eye(NumOfVertexs);
 
@@ -75,7 +75,7 @@ for epoch_index = 1:1:NumOfEpoch
         t_start = 0;
         B_propa = eye(NumOfVertexs);
         for propa_time_index = 1:1:TempSlice
-            if mod(propa_time_index,N_wrap) == 1
+            if mod(propa_time_index,N_wrap) == 1 || propa_time_index == 1
                 G_propa = Get_G_L2(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
             else
                 B_propa = Get_B_L(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
@@ -88,8 +88,6 @@ for epoch_index = 1:1:NumOfEpoch
            for site_index = 1:1:NumOfVertexs
                 mea_result_propa(propa_time_index,count_list(propa_time_index)) = G_propa(site_index,site_index);
                 count_list(propa_time_index) = count_list(propa_time_index) + 1;
-                mea_result_auxi_new(count_new) = G_propa(site_index,site_index);
-                count_new = count_new +1;
            end
         end
        
@@ -130,7 +128,7 @@ end
 % ylabel('log(G_propa)');
 
 errorbar((1:1:TempSlice).*D_Tau/Beta,plot_mean_ori,plot_svar_ori,'r');
-title(['L = ',num2str(NumInEdge),'  ','Uene = ',num2str(Uene), '   Beta = ',num2str(Beta)]);
+title(['L = ',num2str(NumInEdge),'  ','Uene = ',num2str(Uene), '   Beta = ',num2str(Beta),'   N_wrap=',num2str(N_wrap)]);
 xlabel('Tau ratio');
 ylabel('G_{propa}_Err ratio');
 

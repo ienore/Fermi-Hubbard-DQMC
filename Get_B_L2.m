@@ -1,7 +1,7 @@
 function B_L2 = Get_B_L2(alpha,L2,L1,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)
     B_L2 = eye(NumOfVertexs);
-    [U,S,V] = svd(B_L2);
-    Bin_Size = 5;
+    [U,S,V] = svdsim(B_L2);
+    Bin_Size = 4;
     for Bin_index = 1:1:fix((L2-L1)/Bin_Size)+1
         Binned_B_L = eye(NumOfVertexs);
         L_start = L1 + (Bin_index-1) * Bin_Size ;
@@ -14,7 +14,7 @@ function B_L2 = Get_B_L2(alpha,L2,L1,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K
                 Binned_B_L = Get_B_L(alpha,L_start + index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*Binned_B_L;
             end
         end
-        [U,S,V_new] = svd(Binned_B_L*U*S);
+        [U,S,V_new] = svdsim(Binned_B_L*U*S);
         V = V * V_new;
     end
     B_L2 = U * S * V';

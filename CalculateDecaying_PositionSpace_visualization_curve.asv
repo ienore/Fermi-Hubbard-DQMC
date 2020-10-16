@@ -2,13 +2,13 @@
 %fprintf("FINAL_RUN:%d\n",FINAL_RUN);
 zjy_index = 1;
 T_hop = 1.0;
-NumInEdge = 4;
+NumInEdge = 6;
 NumOfVertexs = NumInEdge^2;
 K = Get_K(NumInEdge);
 
-Uene = 2.0;
+Uene = 6;
 Miu = Uene/2;
-Beta = 2;
+Beta = 6;
 D_Tau = 0.2;
 TempSlice = Beta/D_Tau;
 lambda = 2.0*atanh(sqrt(tanh(D_Tau*Uene/4.0)));
@@ -16,7 +16,7 @@ NumOfWarm = 100;
 %NumOfWarm = 0;
 NumOfEpoch = 100;
 Sigma = double(rand([TempSlice,NumOfVertexs])>0.5)*2.0-1.0;%RandomInit
-N_wrap = 5;
+N_wrap = 10;
 N_cut = 5.0;
 id_mat = eye(NumOfVertexs);
 
@@ -73,37 +73,21 @@ for epoch_index = 1:1:NumOfEpoch
             count = count + 1;
         end
         t_start = 0;
-        %G_equal = Get_G_L(1.0,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);%up state
-        %G_equal_down = Get_G_L(-1.0,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);%down state
-        %B_propa = eye(NumOfVertexs);
-        %[U,D,V] = svd(B_propa);
-        %[U_down,D_down,V_down] = svd(B_propa);
-        G_equal = Get_G_L(1.0,t_start,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
         B_propa = eye(NumOfVertexs);
         for propa_time_index = 1:1:TempSlice
-           B_propa = Get_B_L(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*B_propa; 
-           B_propa = Get_B_L2(alpha,p,0,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
-           G_propa = B_propa * G_equal;
-           %[U,D,V_new] = svd((Get_B_L(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*U)*D);
-           %[U_down,D_down,V_new_down] = svd((Get_B_L(-1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*U_down)*D_down);
-           %V = V*V_new;
-           %V_down = V_down * V_new_down;
-           %G_propa = U*(D*(V'* G_equal));
-%            if 1%mod(propa_time_index,N_wrap)==1 || propa_time_index == 1
-%                 %G_propa = Get_G_L2(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
-%                 G_equal = Get_G_L2(1,0,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
-%                 B_propa = Get_B_L2(1,propa_time_index,0,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
-%                 G_propa = B_propa*G_equal;
-%            else
-%                 G_propa = Get_B_L(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*G_propa;
-%            end
-               
-           %G_propa_down = U_down *(D_down * (V_down'*G_equal_down));
+            if mod(propa_time_index,N_wrap) == 1 || propa_time_index == 1
+                G_propa = Get_G_L2(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+            else
+                B_propa = Get_B_L(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+                G_propa = B_propa * G_propa;
+            end
+            
+           %B_propa = Get_B_L(1,propa_time_index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+           %G_propa = B_propa * G_propa;
+
            for site_index = 1:1:NumOfVertexs
                 mea_result_propa(propa_time_index,count_list(propa_time_index)) = G_propa(site_index,site_index);
                 count_list(propa_time_index) = count_list(propa_time_index) + 1;
-                mea_result_auxi_new(count_new) = G_propa(site_index,site_index);
-                count_new = count_new +1;
            end
         end
        
@@ -144,7 +128,7 @@ end
 % ylabel('log(G_propa)');
 
 errorbar((1:1:TempSlice).*D_Tau/Beta,plot_mean_ori,plot_svar_ori,'r');
-title(['L = ',num2str(NumInEdge),'  ','Uene = ',num2str(Uene), '   Beta = ',num2str(Beta)]);
+title(['L = ',num2str(NumInEdge),'  ','Uene = ',num2str(Uene), '   Beta = ',num2str(Beta),'   N_wrap=',num2str(N_wrap)]);
 xlabel('Tau ratio');
 ylabel('G_{propa}_Err ratio');
 

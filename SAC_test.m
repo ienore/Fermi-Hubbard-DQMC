@@ -41,7 +41,7 @@ for epoch_index = 1:1:N_epoch
         diff = norm(Gauge*A - G_k);
         value_old = sum( (Gauge*A - G_k).^2 ) + alpha * dE* sum( (A(1:(length(A)-1))-A(2:length(A))).^2 );
         value_new = sum((Gauge*A_new - G_k).^2) + alpha * dE* sum( (A_new(1:(length(A)-1))-A(2:length(A))).^2 );
-        if value_new<value_old && A_new(A_index) >= 0;
+        if value_new<value_old && A_new(A_index) >= 0
             A = A_new;
         end
     end
