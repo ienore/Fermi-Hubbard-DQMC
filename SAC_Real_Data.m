@@ -2,9 +2,9 @@
 N_epoch = 1e4;
 eps = 1e-3;
 step = 1e-2;
-E_min = -10;
-E_max = 10;
-dE = 0.1;
+E_min = -5;
+E_max = 20;
+dE = 0.5;
 E_range = E_min:dE:E_max;
 alpha = 0.1;
 G_k = zeros([length(plot_mean_ori)+1,1]);

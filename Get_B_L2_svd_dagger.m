@@ -1,4 +1,4 @@
-function [U,S,V] = Get_B_L2_svd(alpha,L2,L1,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)
+function [U,S,V] = Get_B_L2_svd_dagger(alpha,L2,L1,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)
     B_L2 = eye(NumOfVertexs);
     [U,S,V] = svdsim(B_L2);
     Bin_Size = 7;
@@ -22,14 +22,11 @@ function [U,S,V] = Get_B_L2_svd(alpha,L2,L1,NumOfVertexs,Sigma,D_Tau,lambda,Temp
             end
         end
         
-        [U_new,S_new,V_new] = svdsim(Binned_B_L);
-        [u,s,v] = svdsim(S_new*(V_new'*U)*S);
+        [U_new,S_new,V_new] = svdsim_dagger(Binned_B_L);
+        [u,s,v] = svdsim_dagger(S_new*(V_new'*U)*S);
         U = U_new*u;
         S = s;
         V = V*v;
-       % [U,S,V_new] = svdsim(Binned_B_L*U*S);
-       % V = V * V_new;
     end
-    %B_L2 = U * S * V';
 end
 

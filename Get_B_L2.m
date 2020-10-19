@@ -14,8 +14,13 @@ function B_L2 = Get_B_L2(alpha,L2,L1,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K
                 Binned_B_L = Get_B_L(alpha,L_start + index,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene)*Binned_B_L;
             end
         end
-        [U,S,V_new] = svdsim(Binned_B_L*U*S);
-        V = V * V_new;
+        [U_new,S_new,V_new] = svdsim(Binned_B_L);
+        [u,s,v] = svdsim(S_new*(V_new'*U)*S);
+        U = U_new*u;
+        S = s;
+        V = V*v;
+       % [U,S,V_new] = svdsim(Binned_B_L*U*S);
+       % V = V * V_new;
     end
     B_L2 = U * S * V';
 end

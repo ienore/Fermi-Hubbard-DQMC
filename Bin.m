@@ -1,6 +1,6 @@
 function [bin_mean,bin_stdvar] = Bin(sample)
     N = length(sample);
-    bin_num = 15;
+    bin_num = 5;
     max_bin_num = bin_num;
     bin_size = fix(N/bin_num);
     bin_data = zeros([1,bin_num]);

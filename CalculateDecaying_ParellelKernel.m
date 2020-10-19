@@ -13,10 +13,10 @@ function parellel_return = CalculateDecaying_ParellelKernel(zjy_index,Beta,D_Tau
 
     WarmUp(zjy_index,N_wrap,Sigma,id_mat,NumInEdge,NumOfWarm,NumOfEpochInBin,K,TempSlice,NumOfVertexs,Miu,Uene,D_Tau,lambda,T_hop);
     for output_index = 1:1:OutputNumber
+        WarmUp(zjy_index,N_wrap,Sigma,id_mat,NumInEdge,NumOfWarm_inside,NumOfEpochInBin,K,TempSlice,NumOfVertexs,Miu,Uene,D_Tau,lambda,T_hop);
         count_list = zeros([1,TempSlice])+1;
         count = 1.0;
         for epoch_index = 1:1:NumOfEpochInBin
-            WarmUp(zjy_index,N_wrap,Sigma,id_mat,NumInEdge,NumOfWarm_inside,NumOfEpochInBin,K,TempSlice,NumOfVertexs,Miu,Uene,D_Tau,lambda,T_hop);
             if mod(zjy_index,8) == 1
                 fprintf("D_Tau = %f,MC_Ratio = %f, Bin_index = %d\n",D_Tau,epoch_index/NumOfEpochInBin,output_index);
             end

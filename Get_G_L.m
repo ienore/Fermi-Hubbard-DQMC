@@ -3,7 +3,7 @@ function G_L = Get_G_L(alpha,L,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop
 %                                     Get_B_L2(alpha,TempSlice,L,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene));
    
    [U_R,D_R,V_R] = Get_B_L2_svd(alpha,L,0,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
-   [V_L,D_L,U_L] = Get_B_L2_svd(alpha,TempSlice,L,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
+   [V_L,D_L,U_L] = Get_B_L2_svd_dagger(alpha,TempSlice,L,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop,Miu,Uene);
   % G_L = inv(eye(NumOfVertexs) + U_R*D_R*V_R'*V_L*D_L*U_L');
    % I + U_R( D_R V_R V_L D_L) U_L = I + U_R u d v U_L
    V_R = V_R'; 
