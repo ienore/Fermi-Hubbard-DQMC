@@ -1,6 +1,6 @@
 num_of_data = OutputNumber * core_number;
-px = 0;
-py = pi;
+px = pi/2;
+py = pi/2;
 final_mean = zeros([1,TempSlice]);
 final_svar = zeros([1,TempSlice]);
 
@@ -27,11 +27,24 @@ for time_index = 1:1:TempSlice
 end
 plot_mean = zeros([1,TempSlice+1]);
 plot_svar = zeros([1,TempSlice+1]);
-plot_mean(2:TempSlice+1) = final_mean;
-plot_svar(2:TempSlice+1) = final_svar;
-plot_mean(1) = final_mean(TempSlice);
-plot_svar(1) = final_svar(TempSlice);
-errorbar(plot_mean,plot_svar,'r');
+%% Simply Get G without any modification
+plot_mean = final_mean;
+plot_svar = final_svar;
+%% Get G(\beta) to be G(0)
+% plot_mean(2:TempSlice+1) = final_mean;
+% plot_svar(2:TempSlice+1) = final_svar;
+% plot_mean(1) = final_mean(TempSlice);
+% plot_svar(1) = final_svar(TempSlice);
+Tau_range = D_Tau:D_Tau:Beta;
+errorbar(Tau_range,log(plot_mean),plot_svar,'r');
 title(['L=',num2str(NumInEdge),'   ','p_x=',num2str(px),'   ','p_y=',num2str(py),'   \beta=',num2str(Beta),'   ','Uene=',num2str(Uene),'   ','\Delta_\tau=',num2str(D_Tau)])
-    
+
+%% Then we calculate the theoretical result
+Miu = Uene/2;
+e_k = - 2*T_hop*(cos(px)+cos(py));
+pre_factor = 1.0-1.0/(exp(Beta*(e_k-Miu))+1);
+plot_theo = pre_factor * exp(-e_k*Tau_range);
+plot(Tau_range,plot_theo,'blue');
+hold on
+errorbar(Tau_range,(plot_mean),plot_svar,'r*');
     

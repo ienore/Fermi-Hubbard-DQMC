@@ -1,8 +1,8 @@
 N_epoch = 1e5;
 eps = 1e-3;
 step = 1e-2;
-E_min = -10;
-E_max = 10;
+E_min = -5;
+E_max = 5;
 dE = 0.05;
 E_range = E_min:dE:E_max;
 
@@ -23,18 +23,16 @@ end
 A = A/(sum(A)*dE);
 A_ori = A;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for time_index = 1:1:TempSlice+1
+for time_index = 1:1:TempSlice
     for E_index = 1:1:length(E_range)
-        tau = (time_index-1)*D_Tau;
+        tau = (time_index)*D_Tau;
         omega = E_range(E_index);
         Gauge(time_index,E_index) = dE*exp(-omega*(tau-Beta/2))/(2*cosh(Beta*omega/2));
     end
 end
-plot_mean_ori = final_mean;
+plot_mean_ori = plot_mean;
 lenG = length(plot_mean_ori);
-G_k = zeros([lenG+1,1]);
-G_k(2:lenG+1) = plot_mean_ori(1:lenG);
-G_k(1) = plot_mean_ori(lenG);
+G_k = plot_mean_ori';
 
 norm_Gauge = norm(Gauge);
 A = rand([length(E_range),1]);

@@ -1,13 +1,13 @@
 core_number = 8;
 T_hop = 1.0;
 NumInEdge = 8;
-NumOfWarm = 100;
+NumOfWarm = 1;
 NumOfWarm_inside = 0;
 OutputNumber = 8;
 NumOfCores = core_number;
-NumOfEpochInBin = 100;
+NumOfEpochInBin = 1;
 N_wrap = 10;
-Uene = 4.0;
+Uene = 0.0;
 Beta = 8;
 D_Tau = 0.2;
 NumOfVertexs = NumInEdge^2;
