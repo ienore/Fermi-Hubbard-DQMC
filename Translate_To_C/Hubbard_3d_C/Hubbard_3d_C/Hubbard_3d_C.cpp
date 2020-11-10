@@ -1,20 +1,46 @@
-﻿// Hubbard_3d_C.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
+﻿#define min(x,y) (((x) < (y)) ? (x) : (y))
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <cublas_v2.h>
 #include <iostream>
+#include <vector>
+//extern "C"
+//{
+#include <cblas.h>
+//}
 
+using namespace std;
 int main()
 {
-    std::cout << "Hello World!\n";
+
+    const enum CBLAS_ORDER Order = CblasRowMajor;
+    const enum CBLAS_TRANSPOSE TransA = CblasNoTrans;
+    const enum CBLAS_TRANSPOSE TransB = CblasNoTrans;
+    const int M = 4;//A的行数，C的行数
+    const int N = 2;//B的列数，C的列数
+    const int K = 3;//A的列数，B的行数
+    const float alpha = 1;
+    const float beta = 0;
+    const int lda = K;//A的列
+    const int ldb = N;//B的列
+    const int ldc = N;//C的列
+    const float A[M * K] = { 1,2,3,4,5,6,7,8,9,8,7,6 };
+    const float B[K * N] = { 5,4,3,2,1,0 };
+    float C[M * N];
+
+    cblas_sgemm(Order, TransA, TransB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
+
+    for (int i = 0; i < M; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            cout << C[i * N + j] << "\n";
+        }
+        cout << endl;
+    }
+
+    return EXIT_SUCCESS;
+
+
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
