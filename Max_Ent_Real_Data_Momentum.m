@@ -34,6 +34,17 @@ plot_mean_ori = plot_mean;
 lenG = length(plot_mean_ori);
 G_k = plot_mean_ori';
 
+G_k = zeros([TempSlice+1,1]);
+G_k(2:TempSlice+1) = plot_mean_ori;
+G_k(1) = plot_mean_ori(TempSlice);
+for time_index = 1:1:TempSlice+1
+    for E_index = 1:1:length(E_range)
+        tau = (time_index-1)*D_Tau;
+        omega = E_range(E_index);
+        Gauge(time_index,E_index) = dE*exp(-omega*(tau-Beta/2))/(2*cosh(Beta*omega/2));
+    end
+end
+
 norm_Gauge = norm(Gauge);
 A = rand([length(E_range),1]);
 change_sign = 1;
@@ -69,9 +80,12 @@ while (epoch_index < N_epoch || count_not_change < CHANGE_BOUND-10)
     end
 end
 
-plot(E_range,A,'r*')
+%plot(E_range,A,'r*')
+A = A./(sum(A)*dE);
 hold on
 plot(E_range,A)
 diff_G = (Gauge*A - G_k)./G_k;
-
+%title(['L=',num2str(NumInEdge),'   ','p_x=',num2str(px),'   ','p_y=',num2str(py),'   \beta=',num2str(Beta),'   ','Uene=',num2str(Uene),'   ','\Delta_\tau=',num2str(D_Tau)])
+xlabel("\omega");
+ylabel("A(k,\omega)")
 %plot(diff_G,'b')

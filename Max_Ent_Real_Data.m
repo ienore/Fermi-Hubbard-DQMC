@@ -70,10 +70,12 @@ while (epoch_index < N_epoch || count_not_change < CHANGE_BOUND-10)
         end
     end
 end
-
 plot(E_range,A,'r*')
 hold on
-plot(E_range,A)
+plot(E_range,A,'r')
 diff_G = (Gauge*A - G_k)./G_k;
+xlabel("\omega")
+ylabel("A(\omega)")
+title(['L=',num2str(NumInEdge),'   ','  \beta=',num2str(Beta),'   ','Uene=',num2str(Uene),'   ','\Delta_\tau=',num2str(D_Tau)])
 
 %plot(diff_G,'b')

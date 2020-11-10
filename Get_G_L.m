@@ -9,7 +9,7 @@ function G_L = Get_G_L(alpha,L,NumOfVertexs,Sigma,D_Tau,lambda,TempSlice,K,T_hop
    V_R = V_R'; 
    U_L = U_L';
    
-   [u,d,v] = svdsim(D_R*V_R*V_L*D_L);
+   [u,d,v] = svdsim(D_R*(V_R*V_L)*D_L);
    v = v';
    U = U_R*u;
    D = d;

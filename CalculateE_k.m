@@ -186,18 +186,18 @@ for px_index = 1:1:NumInEdge+1
     end
 end
 
-[X,Y] = meshgrid(-pi:delta_p:pi);
-[Xq,Yq] = meshgrid(-pi:0.1:pi);         
-green_p_c_plot = interp2(X,Y,green_p_c,Xq,Yq,'cubic');
-%surf(Xq,Yq,green_p_c_plot);
-surf(X,Y,green_p_c);
-xlabel("K_x");
-ylabel("K_y");
-zlabel("n(k)");
-zlim([0,1]);
-title(['Uene = ',num2str(Uene),'  ','Beta = ',num2str(Beta)])
-colorbar;
-caxis([0,1]);
+% [X,Y] = meshgrid(-pi:delta_p:pi);
+% [Xq,Yq] = meshgrid(-pi:0.1:pi);         
+% green_p_c_plot = interp2(X,Y,green_p_c,Xq,Yq,'cubic');
+% %surf(Xq,Yq,green_p_c_plot);
+% surf(X,Y,green_p_c);
+% xlabel("K_x");
+% ylabel("K_y");
+% zlabel("n(k)");
+% zlim([0,1]);
+% title(['Uene = ',num2str(Uene),'  ','Beta = ',num2str(Beta)])
+% colorbar;
+% caxis([0,1]);
 
 % s = pcolor(green_p_c);
 % xlabel("K_x");
@@ -211,7 +211,7 @@ caxis([0,1]);
 % caxis([0,2])
 % 
 
-disp(mean(mea_result_auxi))
+% disp(mean(mea_result_auxi))
 
 %[grad_x,grad_y] = gradient(green_p_c_plot);
 %grad_sum = sqrt(grad_x.^2 .* grad_y.^2);

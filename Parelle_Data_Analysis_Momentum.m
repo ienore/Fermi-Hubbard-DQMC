@@ -36,9 +36,12 @@ plot_svar = final_svar;
 % plot_mean(1) = final_mean(TempSlice);
 % plot_svar(1) = final_svar(TempSlice);
 Tau_range = D_Tau:D_Tau:Beta;
-errorbar(Tau_range,log(plot_mean),plot_svar,'r');
-title(['L=',num2str(NumInEdge),'   ','p_x=',num2str(px),'   ','p_y=',num2str(py),'   \beta=',num2str(Beta),'   ','Uene=',num2str(Uene),'   ','\Delta_\tau=',num2str(D_Tau)])
-
+%errorbar(Tau_range,plot_mean,plot_svar,'r');
+errorbar(Tau_range,plot_mean,plot_svar);
+%title(['L=',num2str(NumInEdge),'   ','p_x=',num2str(px),'   ','p_y=',num2str(py),'   \beta=',num2str(Beta),'   ','Uene=',num2str(Uene),'   ','\Delta_\tau=',num2str(D_Tau)])
+xlabel("\tau");
+ylabel("G(k,\tau)")
+hold on
 %% Then we calculate the theoretical result
 Miu = Uene/2;
 e_k = - 2*T_hop*(cos(px)+cos(py));
@@ -47,4 +50,12 @@ plot_theo = pre_factor * exp(-e_k*Tau_range);
 plot(Tau_range,plot_theo,'blue');
 hold on
 errorbar(Tau_range,(plot_mean),plot_svar,'r*');
+
+
+%% Formal Plot
+errorbar(Tau_range,(plot_mean),plot_svar,'r');
+title(['L=',num2str(NumInEdge),'   ','p_x=',num2str(px),'   ','p_y=',num2str(py),'   \beta=',num2str(Beta),'   ','Uene=',num2str(Uene),'   ','\Delta_\tau=',num2str(D_Tau)])
+xlabel("\tau");
+ylabel("G(k,\tau)")
+
     

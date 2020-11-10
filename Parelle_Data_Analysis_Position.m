@@ -21,9 +21,10 @@ end
 Tau_range = D_Tau:D_Tau:Beta;
 log_mean = log(final_mean);
 log_svar = final_svar./final_mean;
-errorbar(Tau_range,final_mean,final_svar);
+errorbar(Tau_range,final_mean,final_svar,'r');
 title(['L=',num2str(NumInEdge),'   ','p_x=',num2str(px),'   ','p_y=',num2str(py),'   \beta=',num2str(Beta),'   ','Uene=',num2str(Uene),'   ','\Delta_\tau=',num2str(D_Tau)])
-
+xlabel("\tau");
+ylabel("G(\tau)")
 
 %% Then we calculate the theoretical result for position space
 Miu = Uene/2;

@@ -2,7 +2,7 @@
 TempSlice = 32;
 Beta = 2.0;
 D_Tau = Beta / TempSlice;
-N_epoch = 1e5;
+N_epoch = 1e6;
 eps = 1e-3;
 step = 1e-2;
 E_min = -15;
@@ -70,7 +70,7 @@ while (epoch_index < N_epoch || count_not_change < CHANGE_BOUND-10)
     end
 end
 
-plot(E_range,A,'r*')
+%plot(E_range,A,'r')
 hold on
 %plot(E_range,A)
 diff_G = (Gauge*A - G_k)./G_k;
@@ -79,5 +79,8 @@ p1=plot(E_range,A_ori,'b');
 hold on
 
 p2=plot(E_range,A,'r');
-
+title("Simulated Annealing");
+xlabel("\omega");
+ylabel("A(\omega)");
+legend('Original Data','Simulated Result')
 
