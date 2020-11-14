@@ -51,6 +51,9 @@
     <ClCompile Include="Get_G_L.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="WarmUp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DQMC.h">

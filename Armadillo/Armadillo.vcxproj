@@ -156,6 +156,7 @@
     <ClCompile Include="IndexToCoor_3d.cpp" />
     <ClCompile Include="TEST.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WarmUp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DQMC.h" />
