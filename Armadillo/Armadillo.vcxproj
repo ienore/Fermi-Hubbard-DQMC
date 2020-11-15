@@ -154,16 +154,12 @@
     <ClCompile Include="Get_G_L.cpp" />
     <ClCompile Include="Get_K_3d.cpp" />
     <ClCompile Include="IndexToCoor_3d.cpp" />
-    <ClCompile Include="MonteCarlo_sampling.cpp" />
     <ClCompile Include="TEST.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="WarmUp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DQMC.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DQMC.dat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
