@@ -54,10 +54,18 @@
     <ClCompile Include="WarmUp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MonteCarlo_sampling.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DQMC.h">
       <Filter>源文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DQMC.dat">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

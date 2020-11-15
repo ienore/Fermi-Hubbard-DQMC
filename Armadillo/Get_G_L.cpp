@@ -4,8 +4,8 @@ mat Get_G_L(int alpha, int L, int NumOfVertexs, mat Sigma, double D_Tau, double 
 {
 	mat U_R, D_R, V_R;
 	mat V_L, D_L, U_L;
-	Get_B_L2_svd(&U_R, &D_R, &V_R, alpha, L, 0, NumOfVertexs, Sigma, D_Tau, lambda, TempSlice, K, T_hop, Miu, Uene);
-	Get_B_L2_svd(&V_L, &D_L, &U_L, alpha, TempSlice, L, NumOfVertexs, Sigma, D_Tau, lambda, TempSlice, K, T_hop, Miu, Uene);
+	Get_B_L2_svd(&U_R, &D_R, &V_R, alpha, L+1, 0, NumOfVertexs, Sigma, D_Tau, lambda, TempSlice, K, T_hop, Miu, Uene);
+	Get_B_L2_svd(&V_L, &D_L, &U_L, alpha, TempSlice, L+1, NumOfVertexs, Sigma, D_Tau, lambda, TempSlice, K, T_hop, Miu, Uene);
 	V_R = trans(V_R);
 	U_L = trans(U_L);
 	mat D_R_min(NumOfVertexs, NumOfVertexs, fill::eye);
