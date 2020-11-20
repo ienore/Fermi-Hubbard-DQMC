@@ -11,19 +11,13 @@ mat Get_B_L2_inv(int alpha, int L2, int L1, int NumOfVertexs, mat Sigma, double 
 	S = diagmat(S_vec);
 	mat Binned_B_L(NumOfVertexs, NumOfVertexs, fill::eye);
 	int i;
-	for (int Bin_index = 0; Bin_index < (L2 - L1) / Bin_Size; Bin_index++)
+	for (int Bin_index = 0; Bin_index < (L2 - L1) / Bin_Size + 1; Bin_index++)
 	{
 		Binned_B_L = eye(NumOfVertexs, NumOfVertexs);
 		for (i = L1 + Bin_index * Bin_Size; i < L1 + (Bin_index + 1) * Bin_Size && i < L2; i++)
 		{
-			Binned_B_L = Binned_B_L*Get_B_L(alpha, i, NumOfVertexs, Sigma, D_Tau, lambda, TempSlice, K, T_hop, Miu, Uene);
-		};
-		if (Bin_index == (L2 - L1) / Bin_Size - 1 && i < L2)
-		{
-			for (int j = i; j < L2; j++)
-			{
-				Binned_B_L = Binned_B_L*Get_B_L(alpha, j, NumOfVertexs, Sigma, D_Tau, lambda, TempSlice, K, T_hop, Miu, Uene);
-			}
+			Binned_B_L = Binned_B_L * Get_B_L_inv(alpha, i, NumOfVertexs, Sigma, D_Tau, lambda, TempSlice, K, T_hop, Miu, Uene);
+			//cout << i << endl;
 		};
 		mat U_new;
 		vec S_new_vec;
@@ -35,7 +29,7 @@ mat Get_B_L2_inv(int alpha, int L2, int L1, int NumOfVertexs, mat Sigma, double 
 		mat u;
 		vec s_vec;
 		mat v;
-		svd(u, s_vec, v,S*(trans(V)*U_new)*S_new);
+		svd(u, s_vec, v, S * (trans(V) * U_new) * S_new);
 		U = U * u;
 		S = diagmat(s_vec);
 		V = V_new * v;
