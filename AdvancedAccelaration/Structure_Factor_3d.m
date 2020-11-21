@@ -7,15 +7,15 @@ NumOfVertexs = NumInEdge^3;
 K = Get_K_3d(NumInEdge);
 eta = 0.037;
 
-Uene = 2.0;
+Uene = 8.0;
 
 
 Beta = 3;
 D_Tau = 0.1;
 TempSlice = Beta/D_Tau;
-NumOfWarm = 0;
 NumOfWarm = 10;
-NumOfEpoch = 1;
+%NumOfWarm = 10;
+NumOfEpoch = 10;
 
 px = pi;
 py = pi;
@@ -81,7 +81,7 @@ for epoch_index = 1:1:NumOfEpoch
         green_down_c = id_mat - transpose(green_L_down);
         energy = 0.0;
         for site_index_auxi = 1:1:NumOfVertexs
-            mea_result_auxi(count) = green_down_c(site_index_auxi,site_index_auxi)*green_up_c(site_index_auxi,site_index_auxi);
+            mea_result_auxi(count) = green_down_c(site_index_auxi,site_index_auxi)+green_up_c(site_index_auxi,site_index_auxi);
             count = count + 1;
         end
         S = 0.0;

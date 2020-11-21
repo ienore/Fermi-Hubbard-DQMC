@@ -5,32 +5,31 @@ T_hop = 1.0;
 NumInEdge = 4;
 NumOfVertexs = NumInEdge^3;
 K = Get_K_3d(NumInEdge);
-eta = 0.037;
 
-Uene = 1.0;
+Uene = 5;
 
 
-Beta = 2;
+Beta = 4;
 D_Tau = 0.1;
 TempSlice = Beta/D_Tau;
-
 NumOfWarm = 10;
-NumOfEpoch = 100;
+%NumOfWarm = 10;
+NumOfEpoch = 10;
 
 px = pi;
 py = pi;
 pz = pi;
-
+eta = 0.037;
 %% Related Parametres
 Miu = Uene/2;
 lambda = 2.0*atanh(sqrt(tanh(D_Tau*Uene/4.0)));
 Sigma = double(rand([TempSlice,NumOfVertexs])>0.5)*2.0-1.0;%RandomInit
-N_wrap =5;
+N_wrap = 10;
 N_cut = 5.0;
 id_mat = eye(NumOfVertexs);
 
 mea_x = 1;
-umea_y = 1;
+mea_y = 1;
 mea_result = zeros([1,TempSlice*NumOfEpoch*2]);
 mea_result_auxi = zeros([1,(TempSlice-1)*NumOfEpoch*NumOfVertexs*2]);
 mea_result_DD = zeros([1,(TempSlice-1)*NumOfEpoch*NumOfVertexs*2]);
@@ -39,8 +38,8 @@ count_list = zeros([1,TempSlice])+1;
 count = 1.0;
 count_new = 1;
 count_S = 1;
-%% Calculation
-WarmUp(zjy_index,N_wrap,Sigma,id_mat,NumInEdge,NumOfWarm,NumOfEpoch,K,TempSlice,NumOfVertexs,Miu,Uene,D_Tau,lambda,T_hop);
+
+%% CalculationWarmUp(zjy_index,N_wrap,Sigma,id_mat,NumInEdge,NumOfWarm,NumOfEpoch,K,TempSlice,NumOfVertexs,Miu,Uene,D_Tau,lambda,T_hop);
 for epoch_index = 1:1:NumOfEpoch
     if mod(zjy_index,8) == 1 && mod(epoch_index,NumOfEpoch/1000)==0
         fprintf("D_Tau = %f,MC_Ratio = %f\n",D_Tau,epoch_index/NumOfEpoch);
@@ -81,25 +80,25 @@ for epoch_index = 1:1:NumOfEpoch
         green_down_c = id_mat - transpose(green_L_down);
         energy = 0.0;
         for site_index_auxi = 1:1:NumOfVertexs
-            mea_result_auxi(count) = green_down_c(site_index_auxi,site_index_auxi)*green_up_c(site_index_auxi,site_index_auxi);
+            mea_result_auxi(count) = green_down_c(site_index_auxi,site_index_auxi)+green_up_c(site_index_auxi,site_index_auxi);
             count = count + 1;
         end
         S = 0.0;
-%         for site_i = 1:1:NumOfVertexs
-%             for site_j = 1:1:NumOfVertexs
-%                 [xi,yi,zi] = IndexToCoor_3d(site_i,NumInEdge);
-%                 [xj,yj,zj] = IndexToCoor_3d(site_j,NumInEdge);
-%                 factor = exp(1i*(px*(xi-xj)+py*(yi-yj)+pz*(zi-zj)));
-%                 
-%                 a = green_up_c(site_i,site_i) * green_up_c(site_j,site_j) + green_up_c(site_i,site_j) * green_up(site_i,site_j) + ...
-%                 green_down_c(site_i,site_i) * green_down_c(site_j,site_j) + green_down_c(site_i,site_j) * green_down(site_i,site_j) - ...
-%                 green_down_c(site_i,site_i) * green_up_c(site_j,site_j) - green_up_c(site_i,site_i) * green_down_c(site_j,site_j);
-%             
-%                 S = S + factor * a;
-%             end
-%         end
-        S = (real(S)/(4*NumOfVertexs)) * (NumInEdge)^(-2+eta);
-        mea_result_S(count_S) = S;
+        for site_i = 1:1:NumOfVertexs
+            for site_j = 1:1:NumOfVertexs
+                [xi,yi,zi] = IndexToCoor_3d(site_i,NumInEdge);
+                [xj,yj,zj] = IndexToCoor_3d(site_j,NumInEdge);
+                factor = exp(1i*(px*(xi-xj)+py*(yi-yj)+pz*(zi-zj)));
+                
+                a = green_up_c(site_i,site_i) * green_up_c(site_j,site_j) + green_up_c(site_i,site_j) * green_up(site_i,site_j) + ...
+                green_down_c(site_i,site_i) * green_down_c(site_j,site_j) + green_down_c(site_i,site_j) * green_down(site_i,site_j) - ...
+                green_down_c(site_i,site_i) * green_up_c(site_j,site_j) - green_up_c(site_i,site_i) * green_down_c(site_j,site_j);
+            
+                S = S + factor * a/4;
+            end
+        end
+        S = real(S)/NumInEdge^3;
+        mea_result_S(count_S) = S * NumInEdge^(-2 + eta);
         count_S = count_S + 1;
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MEASURE ?? %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         for site_index = 1:1:NumOfVertexs
@@ -119,15 +118,15 @@ for epoch_index = 1:1:NumOfEpoch
     end
     end
 end
-% 
-% 
-% %% Plot the result 
-% %plot(mea_result_auxi)
- [mean_S,svar_S] = Bin(mea_result_auxi);
-% errorbar(mean_S,svar_S)
-% %hold on
-% %errorbar(0.1554,0,'r*')
-% disp(mean(mea_result_S))
-% 
-disp(svar_S/mean_S)
+
+
+%% Plot the result 
+%plot(mea_result_auxi)
+[mean_S,svar_S] = Bin(mea_result_S);
+errorbar(mean_S,svar_S)
+%hold on
+%errorbar(0.1554,0,'r*')
+disp(mean(mea_result_S))
+
+
 

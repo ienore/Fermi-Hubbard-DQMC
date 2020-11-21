@@ -3,8 +3,8 @@
 zjy_index = 1;
 T_hop = 1.0;
 NumInEdge = 4;
-NumOfVertexs = NumInEdge^2;
-K = Get_K(NumInEdge);
+NumOfVertexs = NumInEdge^3;
+K = Get_K_3d(NumInEdge);
 
 Uene = 4;
 
@@ -12,14 +12,14 @@ Beta = 5;
 D_Tau = 0.1;
 TempSlice = Beta/D_Tau;
 NumOfWarm = 1;
-NumOfWarm = 100;
-NumOfEpoch = 0;
+%NumOfWarm = 10;
+NumOfEpoch = 10;
 
 %% Related Parametres
 Miu = Uene/2;
 lambda = 2.0*atanh(sqrt(tanh(D_Tau*Uene/4.0)));
 Sigma = double(rand([TempSlice,NumOfVertexs])>0.5)*2.0-1.0;%RandomInit
-N_wrap = 20;
+N_wrap = 10;
 N_cut = 5.0;
 id_mat = eye(NumOfVertexs);
 
