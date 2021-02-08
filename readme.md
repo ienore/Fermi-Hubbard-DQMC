@@ -4,6 +4,6 @@ This is a working DQMC program for Hubbard Model, you can change the lattice str
 
 ## A Max-Ent numerical analytic continuation program is included in HubbardAdvanced.
 
-Thanks Prof.ZiyangMeng, Prof.YoujinDeng, Dr.Gaopei Pan for helping me.
+Thanks Prof.ZiyangMeng (HKU), Prof.YoujinDeng (USTC), Dr.Gaopei Pan (CAS) for helping me.
 
 If you have any question or BUG report, just email me at ienore@mail.ustc.edu.cn
